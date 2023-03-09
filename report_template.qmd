@@ -1,0 +1,121 @@
+---
+title: "NGS uppföljningsanalys"
+format: pdf
+geometry: "margin=1.5cm"
+documentclass: "extarticle"
+papersize: "a4"
+fontsize: "8pt"
+output:
+  pdf_document:
+    extra_dependencies: ["float"]
+editor_options:
+  chunk_output_type: console
+params:
+  variant_df: null
+  annot_df: null
+---
+
+```{r param_check, echo=FALSE}
+if (is.null(params$variant_df)) {
+    stop("missing data frame parameter")
+}
+```
+
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(fig.align = "center", echo = FALSE)
+```
+
+```{r packages, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(here)
+```
+
+```{r formatting_function}
+format_vaf <- function(x) {
+  case_when(x == 0 ~ "     0",
+            x < 0.01 ~ format(x, nsmall = 3, scientific = FALSE, width = 6),
+            TRUE ~ format(round(x, digits = 2), nsmall = 0, digits = 2, scientific = FALSE, width = 6))
+}
+```
+
+```{r build_plot}
+d2 <- params$variant_df %>%
+  filter(!is.na(Bedömning), Bedömning != "benign",  Bedömning != "sannolikt benign") %>%
+  arrange(name, Provtagningsdag) %>%
+  mutate(variant_code = LETTERS[as.integer(factor(name))],
+         mod_vaf = ifelse(Bedömning == "ej påvisad", 0, VAF)) %>%
+  group_by(name) %>%
+  mutate(sample_point = str_c(variant_code, seq_along(name)))
+
+facet_label_df <- d2 %>%
+    select(name) %>%
+    distinct() %>%
+    mutate(Provtagningsdag = min(d2$Provtagningsdag))
+
+if (is.null(params$annot_df)) {
+    annotation_df <- tibble(Provtagningsdag = c(), label = c())
+} else {
+    annotation_df <- params$annot_df
+}
+
+vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
+  facet_wrap(vars(name), ncol = 1) +
+  geom_vline(aes(xintercept = Provtagningsdag)) +
+  geom_line(linewidth = 1) +
+  geom_area(alpha = 0.3) +
+  ggrepel::geom_text_repel(
+    aes(label = format_vaf(mod_vaf)),
+    hjust = 2, vjust = 0.5, fontface = "bold",
+    colour = "black", box.padding = 0.25) +
+  geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
+  scale_colour_discrete(name = "Variant") +
+  scale_fill_discrete(name = "Variant") +
+  scale_linetype_discrete(name = "Variant") +
+  scale_x_datetime(date_labels = "%Y-%m-%d", breaks = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+                   sec.axis = sec_axis(~ .,
+                                       breaks = unique(annotation_df$Provtagningsdag),
+                                       labels = annotation_df$label)) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 30, hjust = 1, size = 10),
+    axis.text.x.top = element_text(angle = -30, face = "bold", size = 12),
+    panel.grid.major.x = element_line(linetype = "dashed", colour = "#AAAAAA"),
+    panel.grid.minor.x = element_blank(),
+    legend.key.width = unit(2, "cm"),
+    strip.text = element_text(hjust = 0, face = "bold", size = 12),
+    strip.background = element_rect(colour = "black", fill = "#EEEEEE"),
+    legend.position = "none"
+  )
+```
+
+```{r build_table}
+vaf_table <- d2 %>% ungroup() %>%
+  select(Provtagningsdag, Provnr, Material, Symbol, HGVSc, HGVSp, mod_vaf, Sekvensdjup, Kommentar) %>%
+  mutate(id_material = str_c(Provnr, Material, sep = " "),
+         Kommentar = ifelse(is.na(Kommentar), "", Kommentar),
+         mod_vaf = format_vaf(mod_vaf),
+         HGVS = str_c(HGVSc, HGVSp, sep = ", ")) %>%
+  arrange(Provtagningsdag) %>%
+  select(Provtagningsdag, id_material, Symbol, HGVS, mod_vaf, Sekvensdjup, Kommentar) %>%
+  rename(Provnr = id_material, VAF = mod_vaf)
+```
+
+```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = TRUE, message = FALSE, fig.pos = "H"}
+print(vaf_plot)
+```
+
+\newpage
+
+```{r output_table, results = "asis"}
+print(kableExtra::kbl(vaf_table,
+                      format = "latex",
+                      booktabs = TRUE,
+                      longtable = TRUE,
+                      escape = TRUE,
+                      row.names = FALSE) %>%
+        kableExtra::column_spec(2, width = "1.5cm") %>%
+        kableExtra::column_spec(4, width = "4.5cm") %>%
+        kableExtra::column_spec(7, width = "4cm") %>%
+        kableExtra::collapse_rows(columns = c(1, 2), valign = "middle") %>%
+        kableExtra::kable_classic_2(latex_options = c("repeat_header")))
+```
