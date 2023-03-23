@@ -27,7 +27,7 @@ There are quite a few dependencies, both R and TeX, so using Docker is recommend
 Build the image:
 
 ```bash
-docker build --tag tumor-evolution:0.1.0 .
+docker build --tag tumor-evolution:0.1.1 .
 ```
 
 Generate the report.
@@ -41,5 +41,5 @@ docker run \
     --rm \
     -v /path/to/data.xlsx:/tumor_evolution/data/follow_up_data.xlsx:ro \
     -v /path/to/output:/tumor_evolution/reports \
-    tumor-evolution:0.1.0 <sheet>
+    tumor-evolution:0.1.1 <sheet>
 ```

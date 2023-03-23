@@ -21,7 +21,7 @@ Options:
                     [default: /tumor_evolution/data/follow_up_data.xlsx]
 " -> doc
 
-args <- docopt::docopt(doc, version = "tumor-evolution 0.1.0")
+args <- docopt::docopt(doc, version = "tumor-evolution 0.1.1")
 
 write_log <- function(msg, type = "error") {
     writeLines(str_c(type, ": ", msg),
@@ -78,8 +78,10 @@ d <- d %>%
          name = forcats::fct(name),
          Bedömning = str_trim(str_to_lower(Bedömning)))
 
-# Remove VUS
-vus <- d %>% filter(Bedömning == "vus") %>% with(unique(name))
+# Remove VUS, benign, and likely benign
+vus <- d %>%
+    filter(Bedömning %in% c("vus", "benign", "likely benign")) %>%
+    with(unique(name))
 
 variant_df <- d %>% filter(!name %in% vus)
 annot_df <- d %>%
