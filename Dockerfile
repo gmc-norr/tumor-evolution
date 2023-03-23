@@ -27,3 +27,6 @@ ADD report_template.qmd /tumor_evolution/report_template.qmd
 WORKDIR /tumor_evolution
 
 ENTRYPOINT ["Rscript", "tumor_evolution_report.R"]
+
+LABEL version="0.1.1"
+LABEL description="Visualisation of tumor evolution at Norrlands Universitetssjukhus"
