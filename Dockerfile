@@ -28,5 +28,5 @@ WORKDIR /tumor_evolution
 
 ENTRYPOINT ["Rscript", "tumor_evolution_report.R"]
 
-LABEL version="0.1.1"
+LABEL version="0.1.2"
 LABEL description="Visualisation of tumor evolution at Norrlands Universitetssjukhus"

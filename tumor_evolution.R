@@ -21,7 +21,7 @@ Options:
                     [default: /tumor_evolution/data/follow_up_data.xlsx]
 " -> doc
 
-args <- docopt::docopt(doc, version = "tumor-evolution 0.1.1")
+args <- docopt::docopt(doc, version = "tumor-evolution 0.1.2")
 
 write_log <- function(msg, type = "error") {
     writeLines(str_c(type, ": ", msg),
