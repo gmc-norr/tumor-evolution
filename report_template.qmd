@@ -91,7 +91,7 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
 ```{r build_table}
 vaf_table <- d2 %>% ungroup() %>%
   select(Provtagningsdag, Provnr, Material, Symbol, HGVSc, HGVSp, mod_vaf, Sekvensdjup, Kommentar) %>%
-  mutate(id_material = str_c(Provnr, Material, sep = " "),
+  mutate(id_material = str_c(Provnr, str_replace_na(Material, ""), sep = " "),
          Kommentar = ifelse(is.na(Kommentar), "", Kommentar),
          mod_vaf = format_vaf(mod_vaf),
          HGVS = str_c(HGVSc, HGVSp, sep = ", ")) %>%
