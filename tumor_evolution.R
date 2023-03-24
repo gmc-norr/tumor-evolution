@@ -21,7 +21,7 @@ Options:
                     [default: /tumor_evolution/data/follow_up_data.xlsx]
 " -> doc
 
-args <- docopt::docopt(doc, version = "tumor-evolution 0.1.1")
+args <- docopt::docopt(doc, version = "tumor-evolution 0.1.2")
 
 write_log <- function(msg, type = "error") {
     writeLines(str_c(type, ": ", msg),
@@ -78,12 +78,19 @@ d <- d %>%
          name = forcats::fct(name),
          Bedömning = str_trim(str_to_lower(Bedömning)))
 
-# Remove VUS, benign, and likely benign
+# Exctract VUS, benign, and likely benign variants.
 vus <- d %>%
     filter(Bedömning %in% c("vus", "benign", "likely benign")) %>%
     with(unique(name))
 
-variant_df <- d %>% filter(!name %in% vus)
+# Remove duplicate rows and VUS. This will remove all rows that are
+# completely identical across all columns, with the exception of "Remiss".
+# The first row in each group of identical rows is kept.
+variant_df <- d %>%
+    group_by(Provnr) %>%
+    distinct(across(-Remiss), .keep_all=TRUE) %>%
+    filter(!name %in% vus)
+
 annot_df <- d %>%
     filter(is.na(VAF), !is.na(Kommentar)) %>%
     select(Provtagningsdag, label = Kommentar)
