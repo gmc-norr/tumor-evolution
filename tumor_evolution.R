@@ -21,7 +21,7 @@ Options:
                     [default: /tumor_evolution/data/follow_up_data.xlsx]
 " -> doc
 
-args <- docopt::docopt(doc, version = "tumor-evolution 0.1.2") # x-release-please-version
+args <- docopt::docopt(doc, version = "tumor-evolution 0.1.3") # x-release-please-version
 
 cleanup <- function(prefix) {
     # TODO: add more files/directories that should be cleaned up
