@@ -69,8 +69,11 @@ if (length(missing_columns) > 0) {
 }
 
 d <- d %>%
-  fill(`Archer version`, Remiss, Provnr, Provtagningsdag, Material,
+  fill(Provtagningsdag) %>%
+  group_by(Provtagningsdag) %>%
+  fill(`Archer version`, Remiss, Provnr, Material,
        .direction = "down") %>%
+  ungroup() %>%
   mutate(HGVSp = str_trim(HGVSp),
          HGVSc = str_trim(HGVSc),
          Symbol = str_trim(Symbol),
