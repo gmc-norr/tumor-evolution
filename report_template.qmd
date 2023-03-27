@@ -63,11 +63,11 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   geom_vline(aes(xintercept = Provtagningsdag)) +
   geom_line(linewidth = 1) +
   geom_area(alpha = 0.3) +
+  geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
   ggrepel::geom_text_repel(
     aes(label = format_vaf(mod_vaf)),
     hjust = 2, vjust = 0.5, fontface = "bold",
     colour = "black", box.padding = 0.25) +
-  geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
   scale_colour_discrete(name = "Variant") +
   scale_fill_discrete(name = "Variant") +
   scale_linetype_discrete(name = "Variant") +
