@@ -92,7 +92,7 @@ variant_df <- d %>%
     filter(!name %in% vus)
 
 annot_df <- d %>%
-    filter(is.na(VAF), !is.na(Kommentar)) %>%
+    filter(is.na(VAF), is.na(Symbol), !is.na(Kommentar)) %>%
     select(Provtagningsdag, label = Kommentar)
 
 # File name should be based on the most recent sample ID
