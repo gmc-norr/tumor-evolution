@@ -23,6 +23,16 @@ Options:
 
 args <- docopt::docopt(doc, version = "tumor-evolution 0.1.2")
 
+cleanup <- function(prefix) {
+    # TODO: add more files/directories that should be cleaned up
+    files <- file.path(args$outdir, str_c(prefix, ".tex"))
+    walk(files, ~ {
+        if (file.exists(.)) {
+            unlink(.)
+        }
+    })
+}
+
 write_log <- function(msg, type = "error") {
     writeLines(str_c(type, ": ", msg),
                con = file.path(args$outdir, str_c(args$sheet, "_error.txt")))
@@ -64,7 +74,6 @@ if (length(missing_columns) > 0) {
     msg <- str_c("could not find required columns: ",
                  str_c(missing_columns, collapse = ", "))
     write_log(msg)
-    cleanup()
     stop(msg)
 }
 
@@ -101,16 +110,6 @@ annot_df <- d %>%
 # File name should be based on the most recent sample ID
 filename_prefix <- d %>% pull(Provnr) %>% last()
 
-cleanup <- function() {
-    # TODO: add more files/directories that should be cleaned up
-    files <- file.path(args$outdir, str_c(filename_prefix, ".tex"))
-    walk(files, ~ {
-        if (file.exists(.)) {
-            unlink(.)
-        }
-    })
-}
-
 tryCatch({
     rmarkdown::render(here("report_template.qmd"),
                       params = list(variant_df = variant_df, annot_df = annot_df),
@@ -118,10 +117,10 @@ tryCatch({
                       output_file = file.path(args$outdir, str_c(filename_prefix, ".pdf")))
 }, error = function(cond) {
     write_log(cond$message)
-    cleanup()
+    cleanup(filename_prefix)
     stop(cond)
 }, warning = function(cond) {
     write_log(cond$message, type = "warning")
-    cleanup()
+    cleanup(filename_prefix)
     stop(cond)
 })
