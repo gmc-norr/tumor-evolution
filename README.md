@@ -26,9 +26,11 @@ Options:
 There are quite a few dependencies, both R and TeX, so using Docker is recommended.
 Build the image:
 
+<!-- x-release-please-start-version -->
 ```bash
 docker build --tag tumor-evolution:0.1.2 .
 ```
+<!-- x-release-please-end -->
 
 Generate the report.
 There is one file and one directory that need to be available for this to work using default arguments:
@@ -36,6 +38,7 @@ There is one file and one directory that need to be available for this to work u
 - `/tumor_evolution/reports`: directory to save the generated reports (and/or logs; write permission needed)
 - `/tumor_evolution/data/follow_up_data.xlsx`: Excel document containing the data to be visualised (preferrably read-only)
 
+<!-- x-release-please-start-version -->
 ```bash
 docker run \
     --rm \
@@ -43,3 +46,4 @@ docker run \
     -v /path/to/output:/tumor_evolution/reports \
     tumor-evolution:0.1.2 <sheet>
 ```
+<!-- x-release-please-end -->

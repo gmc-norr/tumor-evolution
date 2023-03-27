@@ -13,3 +13,7 @@ jobs:
           release-type: simple
           package-name: tumor-evolution
           bump-minor-pre-major: true
+          extra-files: |
+            README.md
+            Dockerfile
+            tumor_evolution.R
