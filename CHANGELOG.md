@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.3](https://github.com/gmc-norr/tumor-evolution/compare/0.1.2...v0.1.3) (2023-03-27)
+
+
+### Bug Fixes
+
+* correctly identify annotation rows ([0666011](https://github.com/gmc-norr/tumor-evolution/commit/0666011a563006c98a48c12e886273260fc791f4))
+* don't fill if values are missing ([c424205](https://github.com/gmc-norr/tumor-evolution/commit/c424205bfeaef6f14ab959794b9705e4a09403b9))
+* no cleanup if columns are not found ([1d81906](https://github.com/gmc-norr/tumor-evolution/commit/1d819065d634735ace9d6dea9ad7c695b1c94e3f))
+* plot VAF above points ([cbcad82](https://github.com/gmc-norr/tumor-evolution/commit/cbcad820435e114be31b5f1a600dab3dccdf30e2))
+
 ## 0.1.2
 
 Bug fixes:
