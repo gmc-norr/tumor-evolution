@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.1.3...v0.2.0) (2023-04-04)
+
+
+### Features
+
+* present VAF as percentages ([051ba4d](https://github.com/gmc-norr/tumor-evolution/commit/051ba4dca9a07d01e6f7145dbfca6e40c443a4c7))
+
 ## [0.1.3](https://github.com/gmc-norr/tumor-evolution/compare/0.1.2...v0.1.3) (2023-03-27)
 
 
