@@ -30,14 +30,6 @@ library(tidyverse)
 library(here)
 ```
 
-```{r formatting_function}
-format_vaf <- function(x) {
-  case_when(x == 0 ~ "     0",
-            x < 0.01 ~ format(x, nsmall = 3, scientific = FALSE, width = 6),
-            TRUE ~ format(round(x, digits = 2), nsmall = 0, digits = 2, scientific = FALSE, width = 6))
-}
-```
-
 ```{r build_plot}
 d2 <- params$variant_df %>%
   filter(!is.na(Bedömning), Bedömning != "benign",  Bedömning != "sannolikt benign") %>%
@@ -65,7 +57,7 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   geom_area(alpha = 0.3) +
   geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
   ggrepel::geom_text_repel(
-    aes(label = format_vaf(mod_vaf)),
+    aes(label = round(100 * mod_vaf, digits = 1)),
     hjust = 2, vjust = 0.5, fontface = "bold",
     colour = "black", box.padding = 0.25) +
   scale_colour_discrete(name = "Variant") +
@@ -75,6 +67,8 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
                    sec.axis = sec_axis(~ .,
                                        breaks = unique(annotation_df$Provtagningsdag),
                                        labels = annotation_df$label)) +
+  scale_y_continuous(labels = scales::label_percent()) +
+  labs(y = "VAF (%)") +
   theme_bw() +
   theme(
     axis.text.x = element_text(angle = 30, hjust = 1, size = 10),
@@ -93,11 +87,11 @@ vaf_table <- d2 %>% ungroup() %>%
   select(Provtagningsdag, Provnr, Material, Symbol, HGVSc, HGVSp, mod_vaf, Sekvensdjup, Kommentar) %>%
   mutate(id_material = str_c(Provnr, str_replace_na(Material, ""), sep = " "),
          Kommentar = ifelse(is.na(Kommentar), "", Kommentar),
-         mod_vaf = format_vaf(mod_vaf),
+         mod_vaf = 100 * mod_vaf,
          HGVS = str_c(HGVSc, HGVSp, sep = ", ")) %>%
   arrange(Provtagningsdag) %>%
   select(Provtagningsdag, id_material, Symbol, HGVS, mod_vaf, Sekvensdjup, Kommentar) %>%
-  rename(Provnr = id_material, VAF = mod_vaf)
+  rename(Provnr = id_material, `VAF (%)` = mod_vaf)
 ```
 
 ```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = TRUE, message = FALSE, fig.pos = "H"}
@@ -108,6 +102,8 @@ print(vaf_plot)
 
 ```{r output_table, results = "asis"}
 print(kableExtra::kbl(vaf_table,
+                      align = "llllrrl",
+                      digits = 1,
                       format = "latex",
                       booktabs = TRUE,
                       longtable = TRUE,
