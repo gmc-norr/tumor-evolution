@@ -1,6 +1,6 @@
 suppressPackageStartupMessages({
-    library(tidyverse)
-    library(here)
+  library(tidyverse)
+  library(here)
 })
 
 "Tumor Evolution Report
@@ -9,28 +9,28 @@ Visualise tumor evolution from variant frequencies
 sampled at multiple time points.
 
 Usage:
-    tumor_evolution_report.R [--file=<xlsx>] <sheet>
-    tumor_evolution_report.R (-h | --help)
-    tumor_evolution_report.R --version
+  tumor_evolution_report.R [--file=<xlsx>] <sheet>
+  tumor_evolution_report.R (-h | --help)
+  tumor_evolution_report.R --version
 
 Options:
-    -h --help       Show this message and exit
-    --version       Print version
-    --outdir=<path> Output directory [default: /tumor_evolution/reports]
-    --file=<xlsx>   Excel file to operate on
-                    [default: /tumor_evolution/data/follow_up_data.xlsx]
+  -h --help       Show this message and exit
+  --version       Print version
+  --outdir=<path> Output directory [default: /tumor_evolution/reports]
+  --file=<xlsx>   Excel file to operate on
+                  [default: /tumor_evolution/data/follow_up_data.xlsx]
 " -> doc
 
 args <- docopt::docopt(doc, version = "tumor-evolution 0.1.3") # x-release-please-version
 
 cleanup <- function(prefix) {
-    # TODO: add more files/directories that should be cleaned up
-    files <- file.path(args$outdir, str_c(prefix, ".tex"))
-    walk(files, ~ {
-        if (file.exists(.)) {
-            unlink(.)
-        }
-    })
+  # TODO: add more files/directories that should be cleaned up
+  files <- file.path(args$outdir, str_c(prefix, ".tex"))
+  walk(files, ~ {
+    if (file.exists(.)) {
+      unlink(.)
+    }
+  })
 }
 
 write_log <- function(msg, type = "error") {
@@ -71,10 +71,10 @@ required_columns <- c("Archer version",
 
 missing_columns <- required_columns[!required_columns %in% colnames(d)]
 if (length(missing_columns) > 0) {
-    msg <- str_c("could not find required columns: ",
-                 str_c(missing_columns, collapse = ", "))
-    write_log(msg)
-    stop(msg)
+  msg <- str_c("could not find required columns: ",
+               str_c(missing_columns, collapse = ", "))
+  write_log(msg)
+  stop(msg)
 }
 
 d <- d %>%
@@ -92,35 +92,35 @@ d <- d %>%
 
 # Exctract VUS, benign, and likely benign variants.
 vus <- d %>%
-    filter(Bedömning %in% c("vus", "benign", "likely benign")) %>%
-    with(unique(name))
+  filter(Bedömning %in% c("vus", "benign", "likely benign")) %>%
+  with(unique(name))
 
 # Remove duplicate rows and VUS. This will remove all rows that are
 # completely identical across all columns, with the exception of "Remiss".
 # The first row in each group of identical rows is kept.
 variant_df <- d %>%
-    group_by(Provnr) %>%
-    distinct(across(-Remiss), .keep_all=TRUE) %>%
-    filter(!name %in% vus)
+  group_by(Provnr) %>%
+  distinct(across(-Remiss), .keep_all=TRUE) %>%
+  filter(!name %in% vus)
 
 annot_df <- d %>%
-    filter(is.na(VAF), is.na(Symbol), !is.na(Kommentar)) %>%
-    select(Provtagningsdag, label = Kommentar)
+  filter(is.na(VAF), is.na(Symbol), !is.na(Kommentar)) %>%
+  select(Provtagningsdag, label = Kommentar)
 
 # File name should be based on the most recent sample ID
 filename_prefix <- d %>% pull(Provnr) %>% last()
 
 tryCatch({
-    rmarkdown::render(here("report_template.qmd"),
-                      params = list(variant_df = variant_df, annot_df = annot_df),
-                      intermediates_dir = here("tmp"),
-                      output_file = file.path(args$outdir, str_c(filename_prefix, ".pdf")))
+  rmarkdown::render(here("report_template.qmd"),
+                    params = list(variant_df = variant_df, annot_df = annot_df),
+                    intermediates_dir = here("tmp"),
+                    output_file = file.path(args$outdir, str_c(filename_prefix, ".pdf")))
 }, error = function(cond) {
-    write_log(cond$message)
-    cleanup(filename_prefix)
-    stop(cond)
+  write_log(cond$message)
+  cleanup(filename_prefix)
+  stop(cond)
 }, warning = function(cond) {
-    write_log(cond$message, type = "warning")
-    cleanup(filename_prefix)
-    stop(cond)
+  write_log(cond$message, type = "warning")
+  cleanup(filename_prefix)
+  stop(cond)
 })
