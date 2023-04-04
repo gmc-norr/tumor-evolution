@@ -17,7 +17,7 @@ params:
 
 ```{r param_check, echo=FALSE}
 if (is.null(params$variant_df)) {
-    stop("missing data frame parameter")
+  stop("missing data frame parameter")
 }
 ```
 
@@ -48,14 +48,14 @@ d2 <- params$variant_df %>%
   mutate(sample_point = str_c(variant_code, seq_along(name)))
 
 facet_label_df <- d2 %>%
-    select(name) %>%
-    distinct() %>%
-    mutate(Provtagningsdag = min(d2$Provtagningsdag))
+  select(name) %>%
+  distinct() %>%
+  mutate(Provtagningsdag = min(d2$Provtagningsdag))
 
 if (is.null(params$annot_df)) {
-    annotation_df <- tibble(Provtagningsdag = c(), label = c())
+  annotation_df <- tibble(Provtagningsdag = c(), label = c())
 } else {
-    annotation_df <- params$annot_df
+  annotation_df <- params$annot_df
 }
 
 vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
