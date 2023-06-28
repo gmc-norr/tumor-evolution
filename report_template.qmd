@@ -94,7 +94,7 @@ vaf_table <- d2 %>% ungroup() %>%
   rename(Provnr = id_material, `VAF (%)` = mod_vaf)
 ```
 
-```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = TRUE, message = FALSE, fig.pos = "H"}
+```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = FALSE, message = FALSE, fig.pos = "H"}
 print(vaf_plot)
 ```
 
