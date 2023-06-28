@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/gmc-norr/tumor-evolution/compare/v0.2.0...v0.2.1) (2023-06-28)
+
+
+### Bug Fixes
+
+* remove plot warnings ([#17](https://github.com/gmc-norr/tumor-evolution/issues/17)) ([3474297](https://github.com/gmc-norr/tumor-evolution/commit/3474297f58b242a2b2f5a826ecd889d7cdaaefbb))
+
 ## [0.2.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.1.3...v0.2.0) (2023-04-04)
 
 
