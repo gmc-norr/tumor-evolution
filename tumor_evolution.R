@@ -9,7 +9,7 @@ Visualise tumor evolution from variant frequencies
 sampled at multiple time points.
 
 Usage:
-  tumor_evolution_report.R [--file=<xlsx>] <sheet>
+  tumor_evolution_report.R [--file=<xlsx>] [--sheet=<sheet>]
   tumor_evolution_report.R (-h | --help)
   tumor_evolution_report.R --version
 
@@ -19,6 +19,8 @@ Options:
   --outdir=<path> Output directory [default: /tumor_evolution/reports]
   --file=<xlsx>   Excel file to operate on
                   [default: /tumor_evolution/data/follow_up_data.xlsx]
+  --sheet=<sheet> Sheet to operate on, either name or index (1-based)
+                  [default: 1]
 " -> doc
 
 args <- docopt::docopt(doc, version = "tumor-evolution 0.2.1") # x-release-please-version
@@ -34,20 +36,32 @@ cleanup <- function(prefix) {
 }
 
 write_log <- function(msg, type = "error") {
-    writeLines(str_c(type, ": ", msg),
-               con = file.path(args$outdir, str_c(args$sheet, "_error.txt")))
+  timestamp <- format(Sys.time(), "%Y%m%d-%H%M%S")
+
+  log_file <- file.path(args$outdir, str_c("report.", timestamp, ".", type, ".log"))
+  writeLines(str_c(type, ": ", msg), con = log_file)
 }
 
-d <- readxl::read_excel(args$file,
-                        sheet = args$sheet,
-                        range = readxl::cell_cols("A:T"),
-                        na = c("N/A", ""),
-                        col_types = c(
-                          rep("text", 3),
-                          "date",
-                          rep("text", 7),
-                          rep("numeric", 5),
-                          rep("text", 4)))
+if (!is.na(strtoi(args$sheet))) {
+  args$sheet <- strtoi(args$sheet)
+}
+
+tryCatch({
+  d <- readxl::read_excel(args$file,
+                          sheet = args$sheet,
+                          range = readxl::cell_cols("A:T"),
+                          na = c("N/A", ""),
+                          col_types = c(
+                            rep("text", 3),
+                            "date",
+                            rep("text", 7),
+                            rep("numeric", 5),
+                            rep("text", 4)))
+}, error = function(cond) {
+  write_log(cond$message, type = "error")
+  cleanup(args$sheet)
+  stop(cond)
+})
 
 required_columns <- c("Archer version",
                       "Remiss",
