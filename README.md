@@ -9,16 +9,18 @@ Visualise tumor evolution from variant frequencies
 sampled at multiple time points.
 
 Usage:
-    tumor_evolution_report.R [--file=<xlsx>] <sheet>
-    tumor_evolution_report.R (-h | --help)
-    tumor_evolution_report.R --version
+  tumor_evolution_report.R [--file=<xlsx>] [--sheet=<sheet>]
+  tumor_evolution_report.R (-h | --help)
+  tumor_evolution_report.R --version
 
 Options:
-    -h --help       Show this message and exit
-    --version       Print version
-    --outdir=<path> Output directory [default: /tumor_evolution/reports]
-    --file=<xlsx>   Excel file to fetch data from
-                    [default: /tumor_evolution/data/follow_up_data.xlsx]
+  -h --help       Show this message and exit
+  --version       Print version
+  --outdir=<path> Output directory [default: /tumor_evolution/reports]
+  --file=<xlsx>   Excel file to operate on
+                  [default: /tumor_evolution/data/follow_up_data.xlsx]
+  --sheet=<sheet> Sheet to operate on, either name or index (1-based)
+                  [default: 1]
 ```
 
 ## Docker
@@ -44,6 +46,6 @@ docker run \
     --rm \
     -v /path/to/data.xlsx:/tumor_evolution/data/follow_up_data.xlsx:ro \
     -v /path/to/output:/tumor_evolution/reports \
-    tumor-evolution:0.3.0 <sheet>
+    tumor-evolution:0.3.0 [--sheet <sheet>]
 ```
 <!-- x-release-please-end -->
