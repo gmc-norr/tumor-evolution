@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.3.0...v0.4.0) (2023-07-18)
+
+
+### Features
+
+* add page footer ([#22](https://github.com/gmc-norr/tumor-evolution/issues/22)) ([53300a3](https://github.com/gmc-norr/tumor-evolution/commit/53300a3efb8e2fd256ee3c0a1a848e2bf659a24b))
+
 ## [0.3.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.2.1...v0.3.0) (2023-06-30)
 
 
