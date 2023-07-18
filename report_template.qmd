@@ -8,6 +8,8 @@ fontsize: "8pt"
 output:
   pdf_document:
     extra_dependencies: ["float"]
+    includes:
+      in_header: "footer_config.tex"
 editor_options:
   chunk_output_type: console
 params:
