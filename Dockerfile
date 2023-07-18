@@ -19,10 +19,13 @@ RUN ~/bin/tlmgr install \
         trimspaces \
         ulem \
         makecell \
-        extsizes
+        extsizes \
+        fancyhdr \
+        lastpage
 RUN mkdir /tumor_evolution
 
 ADD tumor_evolution.R /tumor_evolution/tumor_evolution_report.R
+ADD footer_config.tex /tumor_evolution/footer_config.tex
 ADD report_template.qmd /tumor_evolution/report_template.qmd
 WORKDIR /tumor_evolution
 

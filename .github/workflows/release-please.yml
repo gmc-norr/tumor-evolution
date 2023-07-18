@@ -17,3 +17,4 @@ jobs:
             README.md
             Dockerfile
             tumor_evolution.R
+            footer_config.R
