@@ -65,7 +65,9 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   scale_colour_discrete(name = "Variant") +
   scale_fill_discrete(name = "Variant") +
   scale_linetype_discrete(name = "Variant") +
-  scale_x_datetime(date_labels = "%Y-%m-%d", breaks = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+  scale_x_datetime(date_labels = "%Y-%m-%d",
+                   breaks = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+                   guide=guide_axis(n.dodge = 2),
                    sec.axis = sec_axis(~ .,
                                        breaks = unique(annotation_df$Provtagningsdag),
                                        labels = annotation_df$label)) +
@@ -74,8 +76,8 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   labs(y = "VAF (%)") +
   theme_bw() +
   theme(
-    axis.text.x = element_text(angle = 30, hjust = 1, size = 10),
-    axis.text.x.top = element_text(angle = -30, face = "bold", size = 12),
+    axis.text.x = element_text(size = 10),
+    axis.text.x.top = element_text(angle = -30, hjust = 1, face = "bold", size = 12),
     panel.grid.major.x = element_line(linetype = "dashed", colour = "#AAAAAA"),
     panel.grid.minor.x = element_blank(),
     legend.key.width = unit(2, "cm"),
