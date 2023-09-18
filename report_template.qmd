@@ -69,7 +69,8 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
                    sec.axis = sec_axis(~ .,
                                        breaks = unique(annotation_df$Provtagningsdag),
                                        labels = annotation_df$label)) +
-  scale_y_continuous(labels = scales::label_percent()) +
+  scale_y_continuous(labels = scales::label_percent(),
+                     limits = c(0, max(0.5, max(d2$VAF)))) +
   labs(y = "VAF (%)") +
   theme_bw() +
   theme(
