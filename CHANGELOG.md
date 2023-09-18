@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.4.0...v0.5.0) (2023-09-18)
+
+
+### Features
+
+* set minimal y-axis value to 50% ([#24](https://github.com/gmc-norr/tumor-evolution/issues/24)) ([4d24673](https://github.com/gmc-norr/tumor-evolution/commit/4d24673349f86d6d6c73135c98e48664c5b95f9d))
+
+
+### Bug Fixes
+
+* avoid overlapping x-axis labels ([#26](https://github.com/gmc-norr/tumor-evolution/issues/26)) ([bd11672](https://github.com/gmc-norr/tumor-evolution/commit/bd116727194eacaac33d49a360d7442220393cb1))
+
 ## [0.4.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.3.0...v0.4.0) (2023-07-18)
 
 
