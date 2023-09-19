@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.0...v0.5.1) (2023-09-19)
+
+
+### Bug Fixes
+
+* footer version was not updated automatically ([#27](https://github.com/gmc-norr/tumor-evolution/issues/27)) ([ff26538](https://github.com/gmc-norr/tumor-evolution/commit/ff265384dd08dbffee8078db75cd801b748bec06))
+
 ## [0.5.0](https://github.com/gmc-norr/tumor-evolution/compare/v0.4.0...v0.5.0) (2023-09-18)
 
 
