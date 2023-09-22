@@ -66,7 +66,11 @@ sampling_dates <- tibble(
 
 vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   facet_wrap(vars(name), ncol = 1) +
-  geom_vline(aes(xintercept = Provtagningsdag)) +
+  geom_vline(
+    data = sampling_dates,
+    mapping = aes(xintercept = x, linetype = type),
+    colour = "gray"
+  ) +
   geom_line(linewidth = 1) +
   geom_area(alpha = 0.3) +
   geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
@@ -76,9 +80,9 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
     colour = "black", box.padding = 0.25) +
   scale_colour_discrete(name = "Variant") +
   scale_fill_discrete(name = "Variant") +
-  scale_linetype_discrete(name = "Variant") +
+  scale_linetype_manual(values = c(annotation = "dashed", sampling = "solid")) +
   scale_x_datetime(date_labels = "%Y-%m-%d",
-                   breaks = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+                   breaks = sampling_dates$x,
                    guide=guide_axis(n.dodge = 2),
                    sec.axis = sec_axis(~ .,
                                        breaks = unique(annotation_df$Provtagningsdag),
@@ -91,7 +95,7 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
     axis.title.x.bottom = element_blank(),
     axis.text.x.bottom = element_blank(),
     axis.text.x.top = element_text(angle = -30, hjust = 1, face = "bold", size = 12),
-    panel.grid.major.x = element_line(linetype = "dashed", colour = "#AAAAAA"),
+    panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     plot.margin = margin(b = 0),
     legend.key.width = unit(2, "cm"),
