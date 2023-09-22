@@ -23,7 +23,7 @@ Options:
                   [default: 1]
 " -> doc
 
-args <- docopt::docopt(doc, version = "tumor-evolution 0.5.1") # x-release-please-version
+args <- docopt::docopt(doc, version = "tumor-evolution 0.5.2") # x-release-please-version
 
 cleanup <- function(prefix) {
   # TODO: add more files/directories that should be cleaned up

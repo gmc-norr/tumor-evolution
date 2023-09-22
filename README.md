@@ -30,7 +30,7 @@ Build the image:
 
 <!-- x-release-please-start-version -->
 ```bash
-docker build --tag tumor-evolution:0.5.1 .
+docker build --tag tumor-evolution:0.5.2 .
 ```
 <!-- x-release-please-end -->
 
@@ -46,6 +46,6 @@ docker run \
     --rm \
     -v /path/to/data.xlsx:/tumor_evolution/data/follow_up_data.xlsx:ro \
     -v /path/to/output:/tumor_evolution/reports \
-    tumor-evolution:0.5.1 [--sheet <sheet>]
+    tumor-evolution:0.5.2 [--sheet <sheet>]
 ```
 <!-- x-release-please-end -->

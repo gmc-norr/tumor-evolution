@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.2](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.1...v0.5.2) (2023-09-22)
+
+
+### Bug Fixes
+
+* better contrast between grid lines and point annotations ([aa45861](https://github.com/gmc-norr/tumor-evolution/commit/aa45861b292f4a74132522c9fdd0eca8b00053a9))
+* further avoid x-axis label overlaps ([#30](https://github.com/gmc-norr/tumor-evolution/issues/30)) ([aa45861](https://github.com/gmc-norr/tumor-evolution/commit/aa45861b292f4a74132522c9fdd0eca8b00053a9))
+
 ## [0.5.1](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.0...v0.5.1) (2023-09-19)
 
 
