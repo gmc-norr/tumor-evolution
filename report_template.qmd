@@ -52,9 +52,25 @@ if (is.null(params$annot_df)) {
   annotation_df <- params$annot_df
 }
 
+sampling_dates <- tibble(
+  x = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+  y = 0,
+  type = rep(
+    c("annotation", "sampling"),
+    c(
+      length(unique(annotation_df$Provtagningsdag)),
+      length(unique(d2$Provtagningsdag))
+    )
+  )
+)
+
 vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   facet_wrap(vars(name), ncol = 1) +
-  geom_vline(aes(xintercept = Provtagningsdag)) +
+  geom_vline(
+    data = sampling_dates,
+    mapping = aes(xintercept = x, linetype = type),
+    colour = "gray"
+  ) +
   geom_line(linewidth = 1) +
   geom_area(alpha = 0.3) +
   geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
@@ -64,9 +80,9 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
     colour = "black", box.padding = 0.25) +
   scale_colour_discrete(name = "Variant") +
   scale_fill_discrete(name = "Variant") +
-  scale_linetype_discrete(name = "Variant") +
+  scale_linetype_manual(values = c(annotation = "dashed", sampling = "solid")) +
   scale_x_datetime(date_labels = "%Y-%m-%d",
-                   breaks = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+                   breaks = sampling_dates$x,
                    guide=guide_axis(n.dodge = 2),
                    sec.axis = sec_axis(~ .,
                                        breaks = unique(annotation_df$Provtagningsdag),
@@ -76,14 +92,35 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   labs(y = "VAF (%)") +
   theme_bw() +
   theme(
-    axis.text.x = element_text(size = 10),
+    axis.title.x.bottom = element_blank(),
+    axis.text.x.bottom = element_blank(),
     axis.text.x.top = element_text(angle = -30, hjust = 1, face = "bold", size = 12),
-    panel.grid.major.x = element_line(linetype = "dashed", colour = "#AAAAAA"),
+    panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
+    plot.margin = margin(b = 0),
     legend.key.width = unit(2, "cm"),
     strip.text = element_text(hjust = 0, face = "bold", size = 12),
     strip.background = element_rect(colour = "black", fill = "#EEEEEE"),
     legend.position = "none"
+  )
+```
+
+```{r x_axis_labels}
+x_axis_labels <- ggplot(sampling_dates, aes(x = x, y = y)) +
+  ggrepel::geom_text_repel(aes(label=format(x)),
+    box.padding = 0.4,
+    direction = "both",
+    force_pull = 1,
+    segment.colour = "gray",
+    nudge_y = -0.5,
+    size = 3.5) +
+  scale_x_datetime() +
+  scale_y_continuous(limits = c(-1, 0), expand = expansion(mult = 0, add = 0)) +
+  labs(x = "Provtagningsdag") +
+  theme_void() +
+  theme(
+    axis.title.x = element_text(size = 11),
+    plot.margin = margin(t = 0)
   )
 ```
 
@@ -100,7 +137,8 @@ vaf_table <- d2 %>% ungroup() %>%
 ```
 
 ```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = FALSE, message = FALSE, fig.pos = "H"}
-print(vaf_plot)
+library(patchwork)
+vaf_plot / x_axis_labels + plot_layout(heights = c(0.92, 0.08))
 ```
 
 \newpage

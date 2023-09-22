@@ -4,7 +4,7 @@ RUN \
     apt-get -y update && \
     apt-get -y install libxt-dev
 RUN \
-    Rscript -e 'install.packages(c("docopt", "ggrepel", "here", "rmarkdown", "kableExtra", "knitr", "tinytex"))' && \
+    Rscript -e 'install.packages(c("docopt", "ggrepel", "here", "rmarkdown", "kableExtra", "knitr", "tinytex", "patchwork"))' && \
     Rscript -e 'tinytex::install_tinytex(); tinytex::tlmgr_update()'
 RUN ~/bin/tlmgr install \
         multirow \
