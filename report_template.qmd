@@ -155,6 +155,6 @@ print(kableExtra::kbl(vaf_table,
         kableExtra::column_spec(2, width = "1.5cm") %>%
         kableExtra::column_spec(4, width = "4.5cm") %>%
         kableExtra::column_spec(7, width = "4cm") %>%
-        kableExtra::collapse_rows(columns = c(1, 2), valign = "middle") %>%
-        kableExtra::kable_classic_2(latex_options = c("repeat_header")))
+        kableExtra::collapse_rows(columns = c(1, 2), valign = "middle", latex_hline = "major") %>%
+        kableExtra::kable_classic_2(latex_options = c("repeat_header", "striped"), stripe_color = "gray!9"))
 ```
