@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.2...v0.5.3) (2023-09-25)
+
+
+### Bug Fixes
+
+* better table page breaks ([#32](https://github.com/gmc-norr/tumor-evolution/issues/32)) ([092c39c](https://github.com/gmc-norr/tumor-evolution/commit/092c39cd39ebd606d2be1d10c1e5d756b3da8da8))
+
 ## [0.5.2](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.1...v0.5.2) (2023-09-22)
 
 
