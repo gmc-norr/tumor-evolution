@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.3...v0.5.4) (2023-12-18)
+
+
+### Bug Fixes
+
+* increase the number of significant digits for VAF ([#34](https://github.com/gmc-norr/tumor-evolution/issues/34)) ([fafe258](https://github.com/gmc-norr/tumor-evolution/commit/fafe2586d2c7b521d07983aaf5c3e45cceeae4bc))
+
 ## [0.5.3](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.2...v0.5.3) (2023-09-25)
 
 
