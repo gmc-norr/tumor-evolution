@@ -75,7 +75,7 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   geom_area(alpha = 0.3) +
   geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
   ggrepel::geom_text_repel(
-    aes(label = round(100 * mod_vaf, digits = 1)),
+    aes(label = round(100 * mod_vaf, digits = 2)),
     hjust = 2, vjust = 0.5, fontface = "bold",
     colour = "black", box.padding = 0.25) +
   scale_colour_discrete(name = "Variant") +
@@ -146,7 +146,7 @@ vaf_plot / x_axis_labels + plot_layout(heights = c(0.92, 0.08))
 ```{r output_table, results = "asis"}
 print(kableExtra::kbl(vaf_table,
                       align = "llllrrl",
-                      digits = 1,
+                      digits = 2,
                       format = "latex",
                       booktabs = TRUE,
                       longtable = TRUE,
