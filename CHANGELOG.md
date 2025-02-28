@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.4...v0.5.5) (2025-02-28)
+
+
+### Bug Fixes
+
+* drop labels to avoid messy plots ([#37](https://github.com/gmc-norr/tumor-evolution/issues/37)) ([3eaa0f3](https://github.com/gmc-norr/tumor-evolution/commit/3eaa0f3e376cf26085c65c171f1b09cf52ce7d5e))
+
 ## [0.5.4](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.3...v0.5.4) (2023-12-18)
 
 
