@@ -53,14 +53,11 @@ if (is.null(params$annot_df)) {
 }
 
 sampling_dates <- tibble(
-  x = unique(c(annotation_df$Provtagningsdag, d2$Provtagningsdag)),
+  x = unique(c(annotation_df$Provtagningsdag, range(d2$Provtagningsdag))),
   y = 0,
   type = rep(
     c("annotation", "sampling"),
-    c(
-      length(unique(annotation_df$Provtagningsdag)),
-      length(unique(d2$Provtagningsdag))
-    )
+    c(length(unique(annotation_df$Provtagningsdag)), 2)
   )
 )
 
@@ -75,9 +72,11 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   geom_area(alpha = 0.3) +
   geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
   ggrepel::geom_text_repel(
+    data = d2 %>% filter(Provtagningsdag %in% range(Provtagningsdag)),
     aes(label = round(100 * mod_vaf, digits = 2)),
-    hjust = 2, vjust = 0.5, fontface = "bold",
-    colour = "black", box.padding = 0.25) +
+    fontface = "bold",
+    colour = "black", box.padding = 0.25,
+    max.overlaps = Inf) +
   scale_colour_discrete(name = "Variant") +
   scale_fill_discrete(name = "Variant") +
   scale_linetype_manual(values = c(annotation = "dashed", sampling = "solid")) +
@@ -113,7 +112,8 @@ x_axis_labels <- ggplot(sampling_dates, aes(x = x, y = y)) +
     force_pull = 1,
     segment.colour = "gray",
     nudge_y = -0.5,
-    size = 3.5) +
+    size = 3.5,
+    max.overlaps = Inf) +
   scale_x_datetime() +
   scale_y_continuous(limits = c(-1, 0), expand = expansion(mult = 0, add = 0)) +
   labs(x = "Provtagningsdag") +
@@ -136,7 +136,7 @@ vaf_table <- d2 %>% ungroup() %>%
   rename(Provnr = id_material, `VAF (%)` = mod_vaf)
 ```
 
-```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = FALSE, message = FALSE, fig.pos = "H"}
+```{r output_plotr, fig.width = 10, fig.height = 12.5, warning = FALSE, message = FALSE, fig.pos = "H", out.width = "\\textwidth", out.height = "0.8\\textheight", out.extra = "keepaspectratio=true"}
 library(patchwork)
 vaf_plot / x_axis_labels + plot_layout(heights = c(0.92, 0.08))
 ```
