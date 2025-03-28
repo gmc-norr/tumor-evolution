@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.6](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.5...v0.5.6) (2025-03-28)
+
+
+### Bug Fixes
+
+* show points for all samples ([#41](https://github.com/gmc-norr/tumor-evolution/issues/41)) ([d22f64a](https://github.com/gmc-norr/tumor-evolution/commit/d22f64a0585b73c51ee5abf17c2989e2326aca27))
+* use HGVSc in plots if HGVSp is unknown ([#42](https://github.com/gmc-norr/tumor-evolution/issues/42)) ([e3e97ee](https://github.com/gmc-norr/tumor-evolution/commit/e3e97eea34f9873bdb56c132eff14a774b8a0c1b))
+
 ## [0.5.5](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.4...v0.5.5) (2025-02-28)
 
 
