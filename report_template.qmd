@@ -70,7 +70,7 @@ vaf_plot <- ggplot(d2, aes(Provtagningsdag, VAF, colour = name, fill = name)) +
   ) +
   geom_line(linewidth = 1) +
   geom_area(alpha = 0.3) +
-  geom_point(data = d2 %>% filter(!is.na(Bedömning), Bedömning != "ej påvisad"), size = 3) +
+  geom_point(data = d2, size = 3) +
   ggrepel::geom_text_repel(
     data = d2 %>% filter(Provtagningsdag %in% range(Provtagningsdag)),
     aes(label = round(100 * mod_vaf, digits = 2)),
