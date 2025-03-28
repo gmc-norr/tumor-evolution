@@ -97,10 +97,13 @@ d <- d %>%
   fill(`Archer version`, Remiss, Provnr, Material,
        .direction = "down") %>%
   ungroup() %>%
-  mutate(HGVSp = str_trim(HGVSp),
-         HGVSc = str_trim(HGVSc),
+  mutate(HGVSp = coalesce(str_trim(HGVSp), "p.?"),
+         HGVSc = coalesce(str_trim(HGVSc), "c.?"),
          Symbol = str_trim(Symbol),
-         name = str_c(Symbol, HGVSp, sep = " "),
+         name = str_c(Symbol,
+                      case_when(str_detect(HGVSp, "^p\\.\\?$") ~ HGVSc,
+                                TRUE ~ HGVSp),
+                      sep = " "),
          name = forcats::fct(name),
          Bedömning = str_trim(str_to_lower(Bedömning)))
 
