@@ -100,7 +100,7 @@ d <- d %>%
   mutate(HGVSp = str_trim(HGVSp),
          HGVSc = str_trim(HGVSc),
          Symbol = str_trim(Symbol),
-         name = str_c(Symbol, HGVSp, sep = " "),
+         name = str_c(Symbol, case_when(str_detect(HGVSp, "^p\\.\\?$") ~ HGVSc, TRUE ~ HGVSp), sep = " "),
          name = forcats::fct(name),
          Bedömning = str_trim(str_to_lower(Bedömning)))
 
