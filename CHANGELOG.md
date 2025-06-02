@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.7](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.6...v0.5.7) (2025-06-02)
+
+
+### Bug Fixes
+
+* check that annotation dates are defined ([#44](https://github.com/gmc-norr/tumor-evolution/issues/44)) ([e733849](https://github.com/gmc-norr/tumor-evolution/commit/e733849919ac4b5ef1c3a91492ea716ff23f3cd5))
+
 ## [0.5.6](https://github.com/gmc-norr/tumor-evolution/compare/v0.5.5...v0.5.6) (2025-03-28)
 
 
