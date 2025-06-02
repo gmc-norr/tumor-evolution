@@ -91,6 +91,16 @@ if (length(missing_columns) > 0) {
   stop(msg)
 }
 
+# Extract annotations and check that annotations have an explicit date set
+annot_df <- d %>%
+  filter(is.na(VAF), is.na(Symbol), !is.na(Kommentar)) %>%
+  select(Provtagningsdag, label = Kommentar)
+if (!all(!is.na(annot_df$Provtagningsdag))) {
+  msg <- "some or all plot annotations are missing a date"
+  write_log(msg, type = "error")
+  stop(msg)
+}
+
 d <- d %>%
   fill(Provtagningsdag) %>%
   group_by(Provtagningsdag) %>%
@@ -119,10 +129,6 @@ variant_df <- d %>%
   group_by(Provnr) %>%
   distinct(across(-Remiss), .keep_all=TRUE) %>%
   filter(!name %in% vus)
-
-annot_df <- d %>%
-  filter(is.na(VAF), is.na(Symbol), !is.na(Kommentar)) %>%
-  select(Provtagningsdag, label = Kommentar)
 
 # File name should be based on the most recent sample ID
 filename_prefix <- d %>% pull(Provnr) %>% last()
